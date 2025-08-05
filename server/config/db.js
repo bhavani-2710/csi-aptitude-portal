@@ -12,12 +12,14 @@ if (!process.env.PGDATABASE || !process.env.PGUSER || !process.env.PGPASSWORD ||
 const pool = new Pool({
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
-  user: process.env.PGUSER, // fixed key
+  user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
-  ssl: false,
-   max: 50,                  // limit clients in pool
-      idleTimeoutMillis: 30000, // disconnect idle clients
+  max: 50, // limit clients in pool
+  idleTimeoutMillis: 30000, // disconnect idle clients
+  ssl: {
+    rejectUnauthorized: true, // require SSL with server certificate validation
+  },
 });
 
 pool.on('connect', () => {
